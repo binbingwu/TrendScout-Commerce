@@ -1,0 +1,70 @@
+name: Monthly TrendScout Commerce ETL
+
+on:
+  schedule:
+    - cron: "0 9 1 * *"
+  workflow_dispatch:
+    inputs:
+      region:
+        description: "Region code"
+        required: false
+        default: "US"
+      month_top_n:
+        description: "Monthly ranking size"
+        required: false
+        default: "200"
+      year_top_n:
+        description: "Yearly ranking size"
+        required: false
+        default: "500"
+
+jobs:
+  etl:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: src
+      GOOGLE_TRENDS_API_KEY: ${{ secrets.GOOGLE_TRENDS_API_KEY }}
+      REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+      REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+      REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT }}
+      TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+      TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+      AMAZON_ACCESS_KEY: ${{ secrets.AMAZON_ACCESS_KEY }}
+      AMAZON_SECRET_KEY: ${{ secrets.AMAZON_SECRET_KEY }}
+      AMAZON_PARTNER_TAG: ${{ secrets.AMAZON_PARTNER_TAG }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package
+        run: python -m pip install -e .
+
+      - name: Run monthly ETL
+        run: >
+          python scripts/run_etl.py
+          --config config/sources.yaml
+          --window month
+          --top-n "${{ github.event.inputs.month_top_n || '200' }}"
+          --region "${{ github.event.inputs.region || 'US' }}"
+
+      - name: Run yearly ETL
+        run: >
+          python scripts/run_etl.py
+          --config config/sources.yaml
+          --window year
+          --top-n "${{ github.event.inputs.year_top_n || '500' }}"
+          --region "${{ github.event.inputs.region || 'US' }}"
+
+      - name: Upload ETL outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: trendscout-commerce-etl-output
+          path: data/out
+          if-no-files-found: error

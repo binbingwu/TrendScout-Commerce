@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hotcommerce.local/schemas/product.schema.json",
+  "title": "ProductCandidate",
+  "type": "object",
+  "required": ["product_id", "name", "category", "region", "signals"],
+  "properties": {
+    "product_id": { "type": "string" },
+    "name": { "type": "string" },
+    "brand": { "type": ["string", "null"] },
+    "category": { "type": "string" },
+    "region": { "type": "string" },
+    "source_urls": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" }
+    },
+    "signals": {
+      "type": "object",
+      "required": [
+        "commerce_rank",
+        "search_interest",
+        "social_mentions",
+        "social_velocity",
+        "sentiment",
+        "regional_fit",
+        "recency"
+      ],
+      "properties": {
+        "commerce_rank": { "type": ["number", "null"], "minimum": 1 },
+        "search_interest": { "type": "number", "minimum": 0 },
+        "social_mentions": { "type": "number", "minimum": 0 },
+        "social_velocity": { "type": "number" },
+        "sentiment": { "type": "number", "minimum": -1, "maximum": 1 },
+        "regional_fit": { "type": "number", "minimum": 0, "maximum": 1 },
+        "recency": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

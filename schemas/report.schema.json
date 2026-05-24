@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hotcommerce.local/schemas/report.schema.json",
+  "title": "ProductMarketReport",
+  "type": "object",
+  "required": [
+    "product_id",
+    "market_snapshot",
+    "demand_drivers",
+    "audience",
+    "competition",
+    "risks",
+    "forecast",
+    "actions"
+  ],
+  "properties": {
+    "product_id": { "type": "string" },
+    "market_snapshot": { "type": "string" },
+    "demand_drivers": { "type": "array", "items": { "type": "string" } },
+    "audience": { "type": "string" },
+    "competition": { "type": "string" },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "forecast": { "type": "string" },
+    "actions": { "type": "array", "items": { "type": "string" } }
+  }
+}

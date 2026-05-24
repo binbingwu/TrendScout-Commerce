@@ -1,0 +1,68 @@
+project:
+  name: trendscout-commerce
+  default_region: US
+  output_dir: data/out
+
+regions:
+  - code: US
+    name: United States
+  - code: CA
+    name: Canada
+
+windows:
+  month:
+    days: 30
+    default_top_n: 200
+  year:
+    days: 365
+    default_top_n: 500
+
+taxonomy:
+  categories:
+    - beauty
+    - electronics
+    - home
+    - kitchen
+    - fashion
+    - fitness
+    - toys
+    - pet
+
+sources:
+  google_trends:
+    enabled: true
+    adapter: mock
+    weight: 0.25
+  reddit:
+    enabled: true
+    adapter: mock
+    subreddits:
+      - BuyItForLife
+      - skincareaddiction
+      - gadgets
+      - homeautomation
+      - frugalmalefashion
+    weight: 0.15
+  tiktok:
+    enabled: true
+    adapter: mock
+    hashtags:
+      - tiktokmademebuyit
+      - amazonfinds
+      - homefinds
+      - beautyfinds
+    weight: 0.15
+  amazon:
+    enabled: true
+    adapter: mock
+    marketplaces:
+      - US
+    weight: 0.30
+
+scoring:
+  commerce_rank_score: 0.30
+  search_trend_score: 0.25
+  social_velocity_score: 0.20
+  sentiment_score: 0.10
+  regional_fit_score: 0.10
+  recency_score: 0.05

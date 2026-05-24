@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trendscout-commerce"
+version = "0.1.0"
+description = "ETL and product intelligence framework for regional e-commerce hot product discovery."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+dependencies = [
+  "httpx>=0.27",
+  "pydantic>=2.7",
+  "pyyaml>=6.0",
+  "python-dateutil>=2.9",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/trendscout-commerce"
+Repository = "https://github.com/your-org/trendscout-commerce"
+Issues = "https://github.com/your-org/trendscout-commerce/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
